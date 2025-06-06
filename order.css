@@ -1,0 +1,353 @@
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@100..900&family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+:root {
+  /* Colors */
+  --white-color: #fff;
+  --dark-color: #252525;
+  --primary-color: #3b141c;
+  --secondary-color: #f3961c;
+  --light-pink-color: #faf4f5;
+  --medium-gray-color: #ccc;
+
+  /* Font size */
+  --font-size-s: 0.9rem;
+  --font-size-n: 1rem;
+  --font-size-m: 1.12rem;
+  --font-size-l: 1.5rem;
+  --font-size-xl: 2rem;
+  --font-size-xxl: 2.3rem;
+
+  /* Font weight */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Border radius */
+  --border-radius-s: 8px;
+  --border-radius-m: 30px;
+  --border-radius-circle: 50%;
+
+  /* Site max width */
+  --site-max-width: 1300px;
+}
+.section-content h2{
+    text-align: center;
+    padding-top: 80px;
+    color: var(--secondary-color);
+    font-size: 100PX;
+    font-family: "Miniver", sans-serif;
+}
+h3{
+    font-size: 40PX;
+}
+.hero-section h3 , p {
+   padding-top: 20px;
+    padding-bottom: 80px;
+    text-align: center;
+    color: var(--white-color);
+}
+p{
+    font-size: var(--font-size-l);
+} 
+
+.hero-section{
+    background: var(--primary-color);
+}
+.section-title{
+  text-align: center;
+  padding: 60px 0 100px;
+  text-transform:uppercase ;
+  font-size:var(--font-size-xl);
+}
+
+.section-title::after{
+  content: "";
+  width: 80px;
+  height: 5px;
+  display: block;
+  margin: 10px auto 0;
+  border-radius: var(--border-radius-s);
+  background: var(--secondary-color);
+}
+.testimonials-section{
+  padding: 50px 0 100px;
+  background: var(--light-pink-color);
+}
+
+.testimonials-section .slider-wrapper {
+  overflow: hidden;
+  margin: 0px 60px 50px;
+}
+.testimonials-section .testimonial{
+  user-select: none;
+  display: flex;
+  padding: 35px;
+  text-align: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.testimonials-section .testimonial .user-image{
+  width: 180px;
+  height:180px;
+  object-fit: cover;
+  margin-bottom: 50px;
+  border-radius: var(--border-radius-circle);
+}
+.testimonials-section .testimonial .name{
+  margin-bottom: 16px;
+  font-size: var(--font-size-m);
+}
+.testimonials-section .testimonial .feedback{
+  font-family: "Poppins", sans-serif;
+  line-height:40px  
+}
+
+.testimonials-section .swiper-pagination-bullet{
+  width: 15px;
+  height: 15px;
+  opacity: 1;
+  background: var(--secondary-color);
+}
+
+.testimonials-section .swiper-slide-button{
+    margin-top: -50px;
+    color: var(--secondary-color);
+    transition: 0.3s ease;
+}
+.testimonials-section .swiper-slide-button:hover{
+  color: var(--secondary-color);
+}
+.pending-orders-section {
+    background-color: #fff5e6;
+    padding: 50px;
+    border-top: 2px solid #f3961c;
+}
+
+#cart-list li {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#cart-total {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.pending-orders-section {
+  background: #fff;
+  padding: 60px 30px;
+  max-width: 600px;
+  margin: 40px auto;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.pending-orders-section h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+}
+
+#cart-list {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+
+#cart-list li {
+  padding: 10px 15px;
+  border-bottom: 1px solid #ddd;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+#cart-total {
+  text-align: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+}
+
+#checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#checkout-form label {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+#checkout-form input,
+#checkout-form textarea {
+  padding: 10px;
+  border: 2px solid var(--medium-gray-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+#checkout-form input:focus,
+#checkout-form textarea:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+}
+
+#checkout-form button {
+  padding: 12px 25px;
+  background-color: var(--primary-color);
+  color: var(--white-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#checkout-form button:hover {
+  background-color: var(--secondary-color);
+}
+
+#checkout-message {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+}
+.remove-btn {
+  margin-left: 15px;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.remove-btn:hover {
+  background-color: #cc0000;
+  transform: scale(1.05);
+}
+
+/* For screens up to 1024px (Tablet Landscape) */
+@media screen and (max-width: 1024px) {
+    .hero-section {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .hero-details .title {
+        font-size: 2rem;
+    }
+
+    .slider-container {
+        width: 90%;
+        margin: auto;
+    }
+
+    .testimonial {
+        flex: 1 1 45%;
+    }
+
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* For screens up to 900px (Tablet Portrait) */
+@media screen and (max-width: 900px) {
+    .hero-details .title {
+        font-size: 1.8rem;
+    }
+
+    .description,
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    .testimonial {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .user-image {
+        width: 150px;
+        height: auto;
+    }
+
+    .swiper-button-prev,
+    .swiper-button-next {
+        display: none;
+    }
+
+    .slider-wrapper {
+        padding: 0 10px;
+    }
+}
+
+/* For screens up to 640px (Mobile Devices) */
+@media screen and (max-width: 640px) {
+    .hero-details .title {
+        font-size: 1.5rem;
+    }
+
+    .description,
+    .subtitle {
+        font-size: 0.9rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .user-image {
+        width: 120px;
+    }
+
+    .testimonial h3.name {
+        font-size: 1rem;
+    }
+
+    .feedback {
+        font-size: 0.9rem;
+    }
+
+    form input,
+    form textarea {
+        width: 100%;
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    button[type="submit"] {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    .slider-container {
+        padding: 0;
+    }
+
+    #cart-list {
+        font-size: 0.95rem;
+    }
+}
+
