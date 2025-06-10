@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const checkoutForm = document.getElementById("checkout-form");
   const checkoutMessage = document.getElementById("checkout-message");
 
-  checkoutForm.addEventListener("submit", function (e) {
+  checkoutForm.addEventListener("submit", async function (e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
@@ -140,12 +140,45 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    checkoutMessage.style.color = "green";
-    checkoutMessage.textContent = `✅ Thank you, ${name}! Your order has been submitted.`;
+    try {
+      const orderData = {
+        customerName: name,
+        phoneNumber: phone,
+        deliveryAddress: address,
+        items: cart.map(item => ({
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+          total: item.price * item.quantity
+        })),
+        totalAmount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+      };
 
-    // Clear cart
-    cart = [];
-    checkoutForm.reset();
-    updateCartUI();
+      const response = await fetch("https://your-backend-api.com/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(orderData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        checkoutMessage.style.color = "green";
+        checkoutMessage.textContent = `✅ Thank you, ${name}! Your order has been submitted successfully.`;
+        
+        // Clear cart and form
+        cart = [];
+        checkoutForm.reset();
+        updateCartUI();
+      } else {
+        throw new Error(data.message || "Failed to submit order");
+      }
+    } catch (error) {
+      console.error("Order submission error:", error);
+      checkoutMessage.style.color = "red";
+      checkoutMessage.textContent = "Failed to submit order. Please try again.";
+    }
   });
 });
