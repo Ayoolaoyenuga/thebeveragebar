@@ -42,3 +42,45 @@ const swiper = new Swiper(".slider-wrapper", {
     },
   },
 });
+
+// Contact Form Handler
+document.addEventListener("DOMContentLoaded", () => {
+  const contactForm = document.querySelector(".contact-form");
+  
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    
+    const nameInput = contactForm.querySelector('input[placeholder="Your name"]');
+    const emailInput = contactForm.querySelector('input[placeholder="Your email"]');
+    const messageInput = contactForm.querySelector('textarea');
+    
+    try {
+      const formData = {
+        name: nameInput.value.trim(),
+        email: emailInput.value.trim(),
+        message: messageInput.value.trim()
+      };
+
+      const response = await fetch("https://your-backend-api.com/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Show success message
+        alert("Thank you! Your message has been sent successfully.");
+        contactForm.reset(); // Clear the form
+      } else {
+        throw new Error(data.message || "Failed to send message");
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      alert("Failed to send message. Please try again.");
+    }
+  });
+});
