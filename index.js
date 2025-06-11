@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle Signup
     signupForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+        e.preventDefault(); 
 
         const name = signupForm.name.value;
         const email = signupForm.email.value;
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("https://your-backend-api.com/api/signup", {
+            const response = await fetch("http://localhost:5161/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password })
