@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" 
-          content="width=device-width, 
+    <meta name="viewport" content="width=device-width, 
                          initial-scale=1.0">
     <title>The beverage bar</title>
-    <link rel="stylesheet" 
-          href="sign.css">
+    <link rel="stylesheet" href="sign.css">
 </head>
 
 <body>
@@ -29,49 +28,27 @@
 
         <!-- Form section that contains the
              login and the signup form -->
-       <div class="form-section">
+        <div class="form-section">
 
-    <!-- login form -->
-    <form class="login-box" action="/login" method="POST">
-        <input type="email" 
-               class="email ele" 
-               name="email"
-               placeholder="youremail@email.com" 
-               required>
-        <input type="password" 
-               class="password ele" 
-               name="password"
-               placeholder="password" 
-               required>
-        <button type="submit" class="clkbtn">Login</button>
-    </form>
+            <!-- login form -->
+            <form class="login-box" action="/login" method="POST">
+                <input type="email" class="email ele" name="email" placeholder="youremail@email.com" required>
+                <input type="password" class="password ele" name="password" placeholder="password" required>
+                <button type="submit" class="clkbtn">Login</button>
+            </form>
 
-    <!-- signup form -->
-    <form class="signup-box" action="/signup" method="POST">
-        <input type="text" 
-               class="name ele" 
-               name="name"
-               placeholder="Enter your name" 
-               required>
-        <input type="email" 
-               class="email ele" 
-               name="email"
-               placeholder="youremail@email.com" 
-               required>
-        <input type="password" 
-               class="password ele" 
-               name="password"
-               placeholder="password" 
-               required>
-        <input type="password" 
-               class="password ele" 
-               name="confirm_password"
-               placeholder="Confirm password" 
-               required>
-        <button type="submit" class="clkbtn">Signup</button>
-    </form>
+            <!-- signup form -->
+            <form class="signup-box" action="/signup" method="POST">
+                <input type="text" class="name ele" name="name" placeholder="Enter your name" required>
+                <input type="email" class="email ele" name="email" placeholder="youremail@email.com" required>
+                <input type="password" class="password ele" name="password" placeholder="password"  required>
+                <input type="password" class="password ele" name="confirm_password" placeholder="Confirm password"
+                    required>
+                <button type="submit" class="clkbtn">Signup</button>
+            </form>
 
-</div>
-    <script src="index.js"></script>
+        </div>
+        <script src="index.js"></script>
 </body>
+
 </html>
