@@ -31,7 +31,111 @@ const swiper = new Swiper(".slider-wrapper", {
   },
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Fetch products from API
+  async function fetchProducts() {
+    try {
+      const response = await fetch("http://localhost:5161/api/Products");
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      return [];
+    }
+  }
+
+  // Create HTML for a single product
+  function createProductHTML(product) {
+    // Use the backend URL for images
+    const backendUrl = "http://localhost:5161";
+    const imagePath = `${backendUrl}/images/${product.productimg}${product.productimg.includes('.') ? '' : '.png'}`;
+      
+    return `
+      <li class="testimonial swiper-slide">
+        <img src="${imagePath}" alt="${product.name}" class="user-image" onerror="this.src='images/default-product.png'">
+        <h3 class="name">${product.name}</h3>
+        <i class="feedback">₦${product.price.toLocaleString()}</i>
+      </li>
+    `;
+  }
+
+  // Create HTML for a category section
+  function createCategorySection(category) {
+    return `
+      <section class="testimonials-section" id="category-${category.id}">
+        <h2 class="section-title">${category.name}</h2>
+        <div class="section-class">
+          <div class="slider-container swiper">
+            <div class="slider-wrapper">
+              <ul class="testimonials-list swiper-wrapper">
+                ${category.products.map(product => createProductHTML(product)).join('')}
+              </ul>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-slide-button swiper-button-prev"></div>
+              <div class="swiper-slide-button swiper-button-next"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // Initialize products
+  async function initializeProducts() {
+    const categories = await fetchProducts();
+    const mainContent = document.querySelector('main');
+    const heroSection = document.querySelector('.hero-section');
+    
+    // Verify image paths and log any missing images
+    categories.forEach(category => {
+      category.products.forEach(product => {
+        const img = new Image();
+        const backendUrl = "http://localhost:5161";
+        const imagePath = `${backendUrl}/images/${product.productimg}${product.productimg.includes('.') ? '' : '.png'}`;
+        img.onerror = () => console.warn(`Warning: Image not found for ${product.name}: ${imagePath}`);
+        img.src = imagePath;
+      });
+    });
+    
+    // Clear existing product sections
+    const existingSections = document.querySelectorAll('.testimonials-section');
+    existingSections.forEach(section => section.remove());
+    
+    // Add new product sections after hero section
+    categories.forEach(category => {
+      heroSection.insertAdjacentHTML('afterend', createCategorySection(category));
+    });
+
+    // Initialize all new Swiper instances
+    categories.forEach(category => {
+      new Swiper(`#category-${category.id} .slider-container`, {
+        loop: true,
+        grabCursor: true,
+        spaceBetween: 25,
+        slidesPerView: 3,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        },
+      });
+    });
+  }
+
+  // Initialize products on page load
+  await initializeProducts();
+
   const cartList = document.getElementById("cart-list");
   const cartTotal = document.getElementById("cart-total");
   const feedbackMessage = document.createElement("div");
