@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
         message: messageInput.value.trim()
       };
 
-      const response = await fetch("https://your-backend-api.com/api/contact", {
+      const response = await fetch("http://localhost:5161/api/Comment/{id}", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

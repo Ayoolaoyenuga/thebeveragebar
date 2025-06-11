@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const password = loginForm.password.value;
 
         try {
-            const response = await fetch("https://your-backend-api.com/api/login", {
+            const response = await fetch("http://localhost:5161/api/Auth/Login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password })
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 alert("Login successful!");
                 // You can store a token here, e.g., localStorage.setItem("token", data.token);
-                window.location.href = "/dashboard"; // redirect after login
+                window.location.href = "/order.html"; // redirect after login
             } else {
                 alert(data.message || "Login failed.");
             }
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch("http://localhost:5161/api/auth/register", {
+            const response = await fetch("http://localhost:5161/api/Auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ name, email, password })
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("Signup successful!");
-                window.location.href = "/welcome"; // redirect after signup
+                window.location.href = "/signin.html"; // redirect after signup
             } else {
                 alert(data.message || "Signup failed.");
             }

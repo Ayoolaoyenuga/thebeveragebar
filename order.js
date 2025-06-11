@@ -154,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         totalAmount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
       };
 
-      const response = await fetch("https://your-backend-api.com/api/orders", {
+      const response = await fetch("http://localhost:5161/api/OrderItems", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
