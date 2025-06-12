@@ -48,13 +48,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Create HTML for a single product
   function createProductHTML(product) {
-    // Use the backend URL for images
+    // Use the exact backend URL format
     const backendUrl = "http://localhost:5161";
-    const imagePath = `${backendUrl}/images/${product.productimg}${product.productimg.includes('.') ? '' : '.png'}`;
+    // Don't add .png extension - use the exact image name from the API
+    const imagePath = `${backendUrl}/images/${product.productimg}`;
       
     return `
       <li class="testimonial swiper-slide" data-product-id="${product.id}">
-        <img src="${imagePath}" alt="${product.name}" class="user-image" onerror="this.src='images/default-product.png'">
+        <img src="${imagePath}" alt="${product.name}" class="user-image" 
+             onerror="console.error('Failed to load image:', '${imagePath}')">
         <h3 class="name">${product.name}</h3>
         <i class="feedback">₦${product.price.toLocaleString()}</i>
       </li>
@@ -121,14 +123,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const mainContent = document.querySelector('main');
     const heroSection = document.querySelector('.hero-section');
     
-    // Verify image paths and log any missing images
+    // Log the image URLs we're trying to load
     categories.forEach(category => {
       category.products.forEach(product => {
-        const img = new Image();
-        const backendUrl = "http://localhost:5161";
-        const imagePath = `${backendUrl}/images/${product.productimg}${product.productimg.includes('.') ? '' : '.png'}`;
-        img.onerror = () => console.warn(`Warning: Image not found for ${product.name}: ${imagePath}`);
-        img.src = imagePath;
+        console.log(`Loading image for ${product.name}:`, `http://localhost:5161/images/${product.productimg}`);
       });
     });
     
