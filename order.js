@@ -31,7 +31,147 @@ const swiper = new Swiper(".slider-wrapper", {
   },
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  // Fetch products from API
+  async function fetchProducts() {
+    try {
+      const response = await fetch("http://localhost:5161/api/Products");
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      return [];
+    }
+  }
+
+  // Create HTML for a single product
+  function createProductHTML(product) {
+    // Use the backend URL for images
+    const backendUrl = "http://localhost:5161";
+    const imagePath = `${backendUrl}/images/${product.productimg}${product.productimg.includes('.') ? '' : '.png'}`;
+      
+    return `
+      <li class="testimonial swiper-slide" data-product-id="${product.id}">
+        <img src="${imagePath}" alt="${product.name}" class="user-image" onerror="this.src='images/default-product.png'">
+        <h3 class="name">${product.name}</h3>
+        <i class="feedback">₦${product.price.toLocaleString()}</i>
+      </li>
+    `;
+  }
+
+  // Create HTML for a category section
+  function createCategorySection(category) {
+    return `
+      <section class="testimonials-section" id="category-${category.id}">
+        <h2 class="section-title">${category.name}</h2>
+        <div class="section-class">
+          <div class="slider-container swiper">
+            <div class="slider-wrapper">
+              <ul class="testimonials-list swiper-wrapper">
+                ${category.products.map(product => createProductHTML(product)).join('')}
+              </ul>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-slide-button swiper-button-prev"></div>
+              <div class="swiper-slide-button swiper-button-next"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // Update the click handler for products
+  function initializeProductClickHandlers() {
+    const products = document.querySelectorAll(".testimonial");
+    products.forEach((product) => {
+      product.addEventListener("click", () => {
+        const productId = product.dataset.productId;
+        const name = product.querySelector(".name").textContent.trim();
+        const rawPrice = product.querySelector(".feedback").textContent.trim();
+        const cleanPrice = parseInt(rawPrice.replace(/[₦,]/g, ""));
+
+        if (!name || isNaN(cleanPrice) || !productId) {
+          console.warn("Missing or invalid product data:", { name, cleanPrice, productId });
+          return;
+        }
+
+        const existingItem = cart.find((item) => item.productId === productId);
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cart.push({ 
+            productId: productId,
+            name: name,
+            price: cleanPrice,
+            quantity: 1 
+          });
+        }
+
+        updateCartUI();
+        showPopupMessage(`${name} added to cart ✅`);
+      });
+    });
+  }
+
+  // Initialize products
+  async function initializeProducts() {
+    const categories = await fetchProducts();
+    const mainContent = document.querySelector('main');
+    const heroSection = document.querySelector('.hero-section');
+    
+    // Verify image paths and log any missing images
+    categories.forEach(category => {
+      category.products.forEach(product => {
+        const img = new Image();
+        const backendUrl = "http://localhost:5161";
+        const imagePath = `${backendUrl}/images/${product.productimg}${product.productimg.includes('.') ? '' : '.png'}`;
+        img.onerror = () => console.warn(`Warning: Image not found for ${product.name}: ${imagePath}`);
+        img.src = imagePath;
+      });
+    });
+    
+    // Clear existing product sections
+    const existingSections = document.querySelectorAll('.testimonials-section');
+    existingSections.forEach(section => section.remove());
+    
+    // Add new product sections after hero section
+    categories.forEach(category => {
+      heroSection.insertAdjacentHTML('afterend', createCategorySection(category));
+    });
+
+    // Initialize all new Swiper instances
+    categories.forEach(category => {
+      new Swiper(`#category-${category.id} .slider-container`, {
+        loop: true,
+        grabCursor: true,
+        spaceBetween: 25,
+        slidesPerView: 3,
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+          dynamicBullets: true,
+        },
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        },
+      });
+    });
+
+    // Initialize click handlers for the new products
+    initializeProductClickHandlers();
+  }
+
+  // Initialize products on page load
+  await initializeProducts();
+
   const cartList = document.getElementById("cart-list");
   const cartTotal = document.getElementById("cart-total");
   const feedbackMessage = document.createElement("div");
@@ -39,30 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
   document.body.appendChild(feedbackMessage);
 
   let cart = [];
-
-  const products = document.querySelectorAll(".testimonial");
-  products.forEach((product) => {
-    product.addEventListener("click", () => {
-      const name = product.querySelector(".name").textContent.trim();
-      const rawPrice = product.querySelector(".feedback").textContent.trim();
-      const cleanPrice = parseInt(rawPrice.replace(/[₦,]/g, ""));
-
-      if (!name || isNaN(cleanPrice)) {
-        console.warn("Missing or invalid product data:", { name, cleanPrice });
-        return;
-      }
-
-      const existingItem = cart.find((item) => item.name === name);
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({ name, price: cleanPrice, quantity: 1 });
-      }
-
-      updateCartUI();
-      showPopupMessage(`${name} added to cart ✅`);
-    });
-  });
 
   function updateCartUI() {
     cartList.innerHTML = "";
@@ -142,16 +258,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const orderData = {
-        customerName: name,
+        name: name,
         phoneNumber: phone,
         deliveryAddress: address,
         items: cart.map(item => ({
-          name: item.name,
           quantity: item.quantity,
-          price: item.price,
-          total: item.price * item.quantity
-        })),
-        totalAmount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+          productId: item.productId
+        }))
       };
 
       const response = await fetch("http://localhost:5161/api/OrderItems", {
@@ -162,7 +275,19 @@ document.addEventListener("DOMContentLoaded", () => {
         body: JSON.stringify(orderData)
       });
 
-      const data = await response.json();
+      // Log the response for debugging
+      console.log('Response status:', response.status);
+      const responseText = await response.text();
+      console.log('Response text:', responseText);
+
+      // Try to parse as JSON if possible
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.log('Response is not JSON:', responseText);
+        data = { message: responseText };
+      }
 
       if (response.ok) {
         checkoutMessage.style.color = "green";
@@ -173,12 +298,12 @@ document.addEventListener("DOMContentLoaded", () => {
         checkoutForm.reset();
         updateCartUI();
       } else {
-        throw new Error(data.message || "Failed to submit order");
+        throw new Error(data.message || responseText || "Failed to submit order");
       }
     } catch (error) {
       console.error("Order submission error:", error);
       checkoutMessage.style.color = "red";
-      checkoutMessage.textContent = "Failed to submit order. Please try again.";
+      checkoutMessage.textContent = `Failed to submit order: ${error.message}`;
     }
   });
 });
