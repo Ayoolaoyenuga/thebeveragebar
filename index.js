@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 alert("Login successful!");
                 // You can store a token here, e.g., localStorage.setItem("token", data.token);
-                window.location.href = "/order.html"; // redirect after login
+                window.location.href = "./order.html"; // redirect after login
             } else {
                 alert(data.message || "Login failed.");
             }
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (response.ok) {
                 alert("Signup successful!");
-                window.location.href = "/signin.html"; // redirect after signup
+                window.location.href = "./signin.html"; // redirect after signup
             } else {
                 alert(data.message || "Signup failed.");
             }

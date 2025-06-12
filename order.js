@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
-    const phone = document.getElementById("phone").value.trim();
+    const phone = document.getElementById("phonenumber").value.trim();
     const address = document.getElementById("address").value.trim();
 
     if (!name || !phone || !address) {
