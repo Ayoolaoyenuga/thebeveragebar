@@ -39,7 +39,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
-      return await response.json();
+      const data = await response.json();
+      console.log('API Response:', data); // Log the response
+      
+      // Check if data is in the expected format
+      if (!Array.isArray(data)) {
+        console.error('API response is not an array:', data);
+        return [];
+      }
+      
+      return data;
     } catch (error) {
       console.error('Error fetching products:', error);
       return [];
@@ -120,6 +129,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Initialize products
   async function initializeProducts() {
     const categories = await fetchProducts();
+    console.log('Categories received:', categories); // Log categories
+    
+    if (!categories || categories.length === 0) {
+      console.error('No categories received from API');
+      return;
+    }
+
     const mainContent = document.querySelector('main');
     const heroSection = document.querySelector('.hero-section');
     
