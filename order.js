@@ -285,7 +285,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response.ok) {
         checkoutMessage.style.color = "green";
         checkoutMessage.textContent = `✅ Thank you, ${name}! Your order has been submitted successfully.`;
-
+        
+        // Show recent order
+        showRecentOrder(cart);
         // Clear cart and form
         cart = [];
         checkoutForm.reset();
@@ -354,4 +356,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const categoryId = getCategoryIdFromHash();
     if (categoryId) fetchAndRenderCategory(categoryId);
   });
+
+  // Show recent order summary
+  function showRecentOrder(orderItems) {
+    if (!orderItems || orderItems.length === 0) {
+      recentOrdersSection.style.display = "none";
+      return;
+    }
+    recentOrdersList.innerHTML = orderItems.map(item =>
+      `<li>${item.name} ×${item.quantity} - ₦${(item.price * item.quantity).toLocaleString()}</li>`
+    ).join("");
+    recentOrdersSection.style.display = "block";
+  }
 });
