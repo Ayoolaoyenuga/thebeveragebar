@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Fetch products from API
   async function fetchProducts() {
     try {
-      const response = await fetch("http://localhost:5161/api/Products");
+      const response = await fetch("http://localhost:5161/api/Category");
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
@@ -303,5 +303,60 @@ document.addEventListener("DOMContentLoaded", async () => {
       checkoutMessage.style.color = "red";
       checkoutMessage.textContent = `Failed to submit order: ${error.message}`;
     }
+  });
+
+  // Helper: Get category ID from hash (e.g. #/category/1)
+  function getCategoryIdFromHash() {
+    const match = window.location.hash.match(/^#\/category\/(\d+)/);
+    return match ? match[1] : null;
+  }
+
+  // Fetch and render a single category by ID
+  async function fetchAndRenderCategory(categoryId) {
+    try {
+      const response = await fetch(`http://localhost:5161/api/Category/${categoryId}`);
+      if (!response.ok) throw new Error("Failed to fetch category");
+      const category = await response.json();
+
+      // Find or create the section to render into
+      let section = document.getElementById("category-section");
+      if (!section) {
+        section = document.createElement("section");
+        section.id = "category-section";
+        document.querySelector("main").insertBefore(section, document.querySelector(".pending-orders-section"));
+      }
+
+      // Render category title and products
+      section.innerHTML = `
+        <h2>${category.name}</h2>
+        <ul class="testimonials-list swiper-wrapper">
+          ${category.products.map(product => `
+            <li class="testimonial swiper-slide">
+              <img src="http://localhost:5161/images/${product.productimg}" alt="${product.name}" class="user-image">
+              <h3 class="name">${product.name}</h3>
+              <i class="feedback">₦${product.price.toLocaleString()}</i>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+
+      // (Optional) Re-initialize Swiper if needed
+      // new Swiper(".slider-wrapper", { ... });
+
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  // Listen for hash changes (routing)
+  window.addEventListener("hashchange", () => {
+    const categoryId = getCategoryIdFromHash();
+    if (categoryId) fetchAndRenderCategory(categoryId);
+  });
+
+  // On page load, check if a category route is present
+  document.addEventListener("DOMContentLoaded", () => {
+    const categoryId = getCategoryIdFromHash();
+    if (categoryId) fetchAndRenderCategory(categoryId);
   });
 });
