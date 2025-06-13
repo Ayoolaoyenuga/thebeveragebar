@@ -10,27 +10,6 @@ var typed = new Typed("#text", {
   loop: true,
 });
 
-const swiper = new Swiper(".slider-wrapper", {
-  loop: true,
-  grabCursor: true,
-  spaceBetweem: 25,
-  slidesPerView: 3,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-    dynamicBullets: true,
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  breakpoints: {
-    0: { slidesPerView: 1 },
-    768: { slidesPerView: 2 },
-    1024: { slidesPerView: 3 },
-  },
-});
-
 document.addEventListener("DOMContentLoaded", async () => {
   // Fetch products from API
   async function fetchProducts() {
@@ -39,7 +18,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
-      return await response.json();
+      const data = await response.json();
+      console.log('API Response:', data); // Log the response
+      
+      // Check if data is in the expected format
+      if (!Array.isArray(data)) {
+        console.error('API response is not an array:', data);
+        return [];
+      }
+      
+      return data;
     } catch (error) {
       console.error('Error fetching products:', error);
       return [];
@@ -74,9 +62,9 @@ document.addEventListener("DOMContentLoaded", async () => {
               <ul class="testimonials-list swiper-wrapper">
                 ${category.products.map(product => createProductHTML(product)).join('')}
               </ul>
-              <div class="swiper-pagination"></div>
-              <div class="swiper-slide-button swiper-button-prev"></div>
-              <div class="swiper-slide-button swiper-button-next"></div>
+              <div class="swiper-pagination swiper-pagination-${category.id}"></div>
+              <div class="swiper-slide-button swiper-button-prev swiper-button-prev-${category.id}"></div>
+              <div class="swiper-slide-button swiper-button-next swiper-button-next-${category.id}"></div>
             </div>
           </div>
         </div>
@@ -120,6 +108,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Initialize products
   async function initializeProducts() {
     const categories = await fetchProducts();
+    console.log('Categories received:', categories); // Log categories
+    
+    if (!categories || categories.length === 0) {
+      console.error('No categories received from API');
+      return;
+    }
+
     const mainContent = document.querySelector('main');
     const heroSection = document.querySelector('.hero-section');
     
@@ -147,13 +142,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         spaceBetween: 25,
         slidesPerView: 3,
         pagination: {
-          el: ".swiper-pagination",
+          el: `.swiper-pagination-${category.id}`,
           clickable: true,
           dynamicBullets: true,
         },
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          nextEl: `.swiper-button-next-${category.id}`,
+          prevEl: `.swiper-button-prev-${category.id}`,
         },
         breakpoints: {
           0: { slidesPerView: 1 },
