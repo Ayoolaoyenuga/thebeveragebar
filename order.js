@@ -20,13 +20,13 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       const data = await response.json();
       console.log('API Response:', data); // Log the response
-      
+
       // Check if data is in the expected format
       if (!Array.isArray(data)) {
         console.error('API response is not an array:', data);
         return [];
       }
-      
+
       return data;
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const backendUrl = "http://localhost:5161";
     // Don't add .png extension - use the exact image name from the API
     const imagePath = `${backendUrl}/images/${product.productimg}`;
-      
+
     return `
       <li class="testimonial swiper-slide" data-product-id="${product.id}">
         <img src="${imagePath}" alt="${product.name}" class="user-image" 
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Create HTML for a category section
   function createCategorySection(category) {
     return `
-      <section class="testimonials-section" id="category-${category.id}">
+      <section class="testimonials-section" id="testionials">
         <h2 class="section-title">${category.name}</h2>
         <div class="section-class">
           <div class="slider-container swiper">
@@ -91,11 +91,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (existingItem) {
           existingItem.quantity += 1;
         } else {
-          cart.push({ 
+          cart.push({
             productId: productId,
             name: name,
             price: cleanPrice,
-            quantity: 1 
+            quantity: 1
           });
         }
 
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   async function initializeProducts() {
     const categories = await fetchProducts();
     console.log('Categories received:', categories); // Log categories
-    
+
     if (!categories || categories.length === 0) {
       console.error('No categories received from API');
       return;
@@ -117,18 +117,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const mainContent = document.querySelector('main');
     const heroSection = document.querySelector('.hero-section');
-    
+
     // Log the image URLs we're trying to load
     categories.forEach(category => {
       category.products.forEach(product => {
         console.log(`Loading image for ${product.name}:`, `http://localhost:5161/images/${product.productimg}`);
       });
     });
-    
+
     // Clear existing product sections
     const existingSections = document.querySelectorAll('.testimonials-section');
     existingSections.forEach(section => section.remove());
-    
+
     // Add new product sections after hero section
     categories.forEach(category => {
       heroSection.insertAdjacentHTML('afterend', createCategorySection(category));
@@ -136,19 +136,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Initialize all new Swiper instances
     categories.forEach(category => {
-      new Swiper(`#category-${category.id} .slider-container`, {
+      new Swiper(`.slider-wrapper`, {
         loop: true,
         grabCursor: true,
         spaceBetween: 25,
         slidesPerView: 3,
         pagination: {
-          el: `.swiper-pagination-${category.id}`,
+          el: `.swiper-pagination`,
           clickable: true,
           dynamicBullets: true,
         },
         navigation: {
-          nextEl: `.swiper-button-next-${category.id}`,
-          prevEl: `.swiper-button-prev-${category.id}`,
+          nextEl: `.swiper-button-next`,
+          prevEl: `.swiper-button-prev`,
         },
         breakpoints: {
           0: { slidesPerView: 1 },
@@ -285,7 +285,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (response.ok) {
         checkoutMessage.style.color = "green";
         checkoutMessage.textContent = `✅ Thank you, ${name}! Your order has been submitted successfully.`;
-        
+
         // Clear cart and form
         cart = [];
         checkoutForm.reset();
