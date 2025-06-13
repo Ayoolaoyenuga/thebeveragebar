@@ -356,4 +356,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const categoryId = getCategoryIdFromHash();
     if (categoryId) fetchAndRenderCategory(categoryId);
   });
+
+  document.getElementById('view-orders-btn').addEventListener('click', fetchOrders);
 });
