@@ -10,27 +10,6 @@ var typed = new Typed("#text", {
   loop: true,
 });
 
-const swiper = new Swiper(".slider-wrapper", {
-  loop: true,
-  grabCursor: true,
-  spaceBetweem: 25,
-  slidesPerView: 3,
-  pagination: {
-    el: ".swiper-pagination",
-    clickable: true,
-    dynamicBullets: true,
-  },
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-  breakpoints: {
-    0: { slidesPerView: 1 },
-    768: { slidesPerView: 2 },
-    1024: { slidesPerView: 3 },
-  },
-});
-
 document.addEventListener("DOMContentLoaded", async () => {
   // Fetch products from API
   async function fetchProducts() {
