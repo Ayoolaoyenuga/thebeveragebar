@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Fetch products from API
   async function fetchProducts() {
     try {
-      const response = await fetch("http://localhost:5161/api/Products");
+      const response = await fetch("http://localhost:5161/api/Category");
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
@@ -83,9 +83,9 @@ document.addEventListener("DOMContentLoaded", async () => {
               <ul class="testimonials-list swiper-wrapper">
                 ${category.products.map(product => createProductHTML(product)).join('')}
               </ul>
-              <div class="swiper-pagination"></div>
-              <div class="swiper-slide-button swiper-button-prev"></div>
-              <div class="swiper-slide-button swiper-button-next"></div>
+              <div class="swiper-pagination swiper-pagination-${category.id}"></div>
+              <div class="swiper-slide-button swiper-button-prev swiper-button-prev-${category.id}"></div>
+              <div class="swiper-slide-button swiper-button-next swiper-button-next-${category.id}"></div>
             </div>
           </div>
         </div>
@@ -163,13 +163,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         spaceBetween: 25,
         slidesPerView: 3,
         pagination: {
-          el: ".swiper-pagination",
+          el: `.swiper-pagination-${category.id}`,
           clickable: true,
           dynamicBullets: true,
         },
         navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev",
+          nextEl: `.swiper-button-next-${category.id}`,
+          prevEl: `.swiper-button-prev-${category.id}`,
         },
         breakpoints: {
           0: { slidesPerView: 1 },
