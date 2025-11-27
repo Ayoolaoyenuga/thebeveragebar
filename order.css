@@ -11,6 +11,7 @@
   --white-color: #fff;
   --dark-color: #252525;
   --primary-color: #3b141c;
+   --teritary-color:#181f39;
   --secondary-color: #f3961c;
   --light-pink-color: #faf4f5;
   --medium-gray-color: #ccc;
@@ -58,7 +59,7 @@ p{
 } 
 
 .hero-section{
-    background: var(--primary-color);
+    background: var(--teritary-color);
 }
 .section-title{
   text-align: center;
@@ -96,11 +97,11 @@ p{
 
 
 .testimonials-section .testimonial .user-image{
-  width: 180px;
-  height:180px;
+  width: 200px;
+  height:280px;
   object-fit: cover;
   margin-bottom: 50px;
-  border-radius: var(--border-radius-circle);
+  border-radius: var(--border-radius-m);
 }
 .testimonials-section .testimonial .name{
   margin-bottom: 16px;
@@ -140,7 +141,7 @@ p{
 #cart-total {
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--teritary-color);
 }
 .pending-orders-section {
   background: #fff;
@@ -155,7 +156,7 @@ p{
   text-align: center;
   font-size: 2rem;
   margin-bottom: 30px;
-  color: var(--primary-color);
+  color: var(--teritary-color);
 }
 
 #cart-list {
@@ -209,7 +210,7 @@ p{
 
 #checkout-form button {
   padding: 12px 25px;
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   color: var(--white-color);
   font-weight: 700;
   font-size: 1.1rem;
