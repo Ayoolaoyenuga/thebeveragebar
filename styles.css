@@ -196,7 +196,16 @@ nav .logo-text{
 .about-section{
   padding: 120px 0;
   background: var(--light-pink-color);
-  
+   opacity: 0;                /* Start invisible */
+  transform: translateY(50px); /* Start slightly below */
+  animation: slideUp 1s ease-out forwards; /* Apply animation */
+  animation-delay: 0.5s;
+}
+@keyframes slideUp {
+  to {
+    opacity: 1;              /* Fade in */
+    transform: translateY(0); /* Move to normal position */
+  }
 }
 .about-section .section-content{
   display: flex;
